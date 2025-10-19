@@ -69,34 +69,83 @@ std::string binarioATexto(const std::string& binario) {
     return texto;
 }
 
+std::string* dividirEnBloques(const std::string& binario, int n, int& numBloques) {
+    numBloques = (binario.length() + n - 1) / n;
+    std::string* bloques = new std::string[numBloques];
+
+    for (int i = 0; i < numBloques; i++) {
+        int inicio = i * n;
+        int longitud = n;
+        if (inicio + longitud > binario.length()) {
+            longitud = binario.length() - inicio;
+        }
+        bloques[i] = binario.substr(inicio, longitud);
+
+        while (bloques[i].length() < n) {
+            bloques[i] += '0';
+        }
+    }
+    return bloques;
+}
+
+std::string unirBloques(std::string* bloques, int numBloques) {
+    std::string resultado;
+    for (int i = 0; i < numBloques; i++) {
+        resultado += bloques[i];
+    }
+    return resultado;
+}
+
+int contarUnos(const std::string& bloque) {
+    int count = 0;
+    for (char bit : bloque) {
+        if (bit == '1') count++;
+    }
+    return count;
+}
+
 int main() {
+    std::cout << "=== FASE 3: Pruebas de Manipulacion de Bloques ===" << std::endl;
 
     try {
 
-        std::cout << "1. Probando conversion de caracter 'A'..." << std::endl;
-        std::string binarioA = charABinario('A');
-        char caracterA = binarioAChar(binarioA);
-        std::cout << "A -> binario: " << binarioA << " -> caracter: " << caracterA << std::endl;
-        std::cout << "\n2. Probando conversion de texto 'Hola'..." << std::endl;
-        std::string texto = "Hola";
-        std::string binario = textoABinario(texto);
-        std::string textoConvertido = binarioATexto(binario);
-        std::cout << "Texto original: " << texto << std::endl;
-        std::cout << "Texto convertido: " << textoConvertido << std::endl;
+        std::cout << "1. Probando division en bloques..." << std::endl;
+        std::string binario = "0100001011000100";
+        int numBloques;
+        std::string* bloques = dividirEnBloques(binario, 4, numBloques);
+
         std::cout << "Binario: " << binario << std::endl;
-        std::cout << "\n3. Probando ida y vuelta..." << std::endl;
-        std::string prueba = "AbCd123";
-        std::string resultado = binarioATexto(textoABinario(prueba));
-        if (prueba == resultado) {
-            std::cout << "Conversion ida y vuelta exitosa" << std::endl;
+        std::cout << "Bloques de 4 bits: ";
+        for (int i = 0; i < numBloques; i++) {
+            std::cout << bloques[i] << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "\n2. Probando union de bloques..." << std::endl;
+        std::string unido = unirBloques(bloques, numBloques);
+        std::cout << "Binario unido: " << unido << std::endl;
+        if (binario == unido) {
+            std::cout << "Coincide con original: Si" << std::endl;
         } else {
-            std::cout << "Error en conversion ida y vuelta" << std::endl;
+            std::cout << "Coincide con original: No" << std::endl;
             return 1;
         }
 
+        std::cout << "\n3. Probando conteo de unos..." << std::endl;
+        std::string bloquePrueba = "101001";
+        int unos = contarUnos(bloquePrueba);
+        std::cout << "Bloque: " << bloquePrueba << " -> Unos: " << unos << std::endl;
+        if (unos == 3) {
+            std::cout << "Conteo correcto" << std::endl;
+        } else {
+            std::cout << "Conteo incorrecto" << std::endl;
+            return 1;
+        }
+
+        delete[] bloques;
 
     } catch (const std::exception& e) {
-        std::cerr << "Error" << e.what() << std::endl;
+        std::cerr << "Error en Fase 3: " << e.what() << std::endl;
         return 1;
     }
 
