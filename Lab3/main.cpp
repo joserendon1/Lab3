@@ -104,48 +104,93 @@ int contarUnos(const std::string& bloque) {
     return count;
 }
 
+std::string invertirBits(const std::string& bloque) {
+    std::string resultado;
+    for (char bit : bloque) {
+        resultado += (bit == '0') ? '1' : '0';
+    }
+    return resultado;
+}
+
+std::string invertirCadaDosBits(const std::string& bloque) {
+    std::string resultado = bloque;
+    for (size_t i = 0; i + 1 < resultado.length(); i += 2) {
+        char temp = resultado[i];
+        resultado[i] = resultado[i + 1];
+        resultado[i + 1] = temp;
+    }
+    return resultado;
+}
+
+std::string invertirCadaTresBits(const std::string& bloque) {
+    std::string resultado = bloque;
+    for (size_t i = 0; i + 2 < resultado.length(); i += 3) {
+        char temp = resultado[i];
+        resultado[i] = resultado[i + 2];
+        resultado[i + 2] = temp;
+    }
+    return resultado;
+}
+
+std::string codificarMetodo1(const std::string& binario, int n) {
+    int numBloques;
+    std::string* bloques = dividirEnBloques(binario, n, numBloques);
+
+    for (int i = 0; i < numBloques; i++) {
+        if (i == 0) {
+            bloques[i] = invertirBits(bloques[i]);
+        } else {
+            int unos = contarUnos(bloques[i - 1]);
+            int ceros = n - unos;
+
+            if (unos == ceros) {
+                bloques[i] = invertirBits(bloques[i]);
+            } else if (ceros > unos) {
+                bloques[i] = invertirCadaDosBits(bloques[i]);
+            } else {
+                bloques[i] = invertirCadaTresBits(bloques[i]);
+            }
+        }
+    }
+
+    std::string resultado = unirBloques(bloques, numBloques);
+    delete[] bloques;
+    return resultado;
+}
+
 int main() {
-    std::cout << "=== FASE 3: Pruebas de Manipulacion de Bloques ===" << std::endl;
 
     try {
 
-        std::cout << "1. Probando division en bloques..." << std::endl;
-        std::string binario = "0100001011000100";
-        int numBloques;
-        std::string* bloques = dividirEnBloques(binario, 4, numBloques);
+        std::cout << "1. Probando con ejemplo 'AbCd' y n=4..." << std::endl;
+        std::string texto = "AbCd";
+        std::string binario = textoABinario(texto);
+        std::string codificado = codificarMetodo1(binario, 4);
 
-        std::cout << "Binario: " << binario << std::endl;
-        std::cout << "Bloques de 4 bits: ";
-        for (int i = 0; i < numBloques; i++) {
-            std::cout << bloques[i] << " ";
-        }
-        std::cout << std::endl;
+        std::cout << "Texto: " << texto << std::endl;
+        std::cout << "Binario original: " << binario << std::endl;
+        std::cout << "Binario codificado: " << codificado << std::endl;
 
-        std::cout << "\n2. Probando union de bloques..." << std::endl;
-        std::string unido = unirBloques(bloques, numBloques);
-        std::cout << "Binario unido: " << unido << std::endl;
-        if (binario == unido) {
-            std::cout << "Coincide con original: Si" << std::endl;
+        std::cout << "\n2. Verificando longitud..." << std::endl;
+        std::cout << "Longitud original: " << binario.length() << " bits" << std::endl;
+        std::cout << "Longitud codificado: " << codificado.length() << " bits" << std::endl;
+        if (binario.length() == codificado.length()) {
+            std::cout << "Longitudes coinciden: Si" << std::endl;
         } else {
-            std::cout << "Coincide con original: No" << std::endl;
+            std::cout << "Longitudes coinciden: No" << std::endl;
             return 1;
         }
 
-        std::cout << "\n3. Probando conteo de unos..." << std::endl;
-        std::string bloquePrueba = "101001";
-        int unos = contarUnos(bloquePrueba);
-        std::cout << "Bloque: " << bloquePrueba << " -> Unos: " << unos << std::endl;
-        if (unos == 3) {
-            std::cout << "Conteo correcto" << std::endl;
-        } else {
-            std::cout << "Conteo incorrecto" << std::endl;
-            return 1;
-        }
-
-        delete[] bloques;
+        std::cout << "\n3. Probando con archivo..." << std::endl;
+        escribirArchivo("entrada.txt", "Test de codificacion");
+        std::string contenido = leerArchivo("entrada.txt");
+        binario = textoABinario(contenido);
+        codificado = codificarMetodo1(binario, 5);
+        escribirArchivo("salida_codificado.txt", codificado);
+        std::cout << "Archivo codificado guardado como 'salida_codificado.txt'" << std::endl;
 
     } catch (const std::exception& e) {
-        std::cerr << "Error en Fase 3: " << e.what() << std::endl;
+        std::cerr << "Error " << e.what() << std::endl;
         return 1;
     }
 
