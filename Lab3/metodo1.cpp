@@ -11,23 +11,21 @@ std::string invertirBits(const std::string& bloque) {
 
 std::string invertirCadaDosBits(const std::string& bloque) {
     std::string resultado = bloque;
-    if (resultado.length() > 1) {
-        resultado[1] = (resultado[1] == '0') ? '1' : '0';
+
+    for (size_t pos = 1; pos < resultado.length(); pos += 2) {
+        resultado[pos] = (resultado[pos] == '0') ? '1' : '0';
     }
-    if (resultado.length() > 3) {
-        resultado[3] = (resultado[3] == '0') ? '1' : '0';
-    }
+
     return resultado;
 }
 
 std::string invertirCadaTresBits(const std::string& bloque) {
     std::string resultado = bloque;
-    if (resultado.length() > 0) {
-        resultado[0] = (resultado[0] == '0') ? '1' : '0';
+
+    for (size_t i = 2; i < resultado.length(); i += 3) {
+        resultado[i] = (resultado[i] == '0') ? '1' : '0';
     }
-    if (resultado.length() > 2) {
-        resultado[2] = (resultado[2] == '0') ? '1' : '0';
-    }
+
     return resultado;
 }
 
