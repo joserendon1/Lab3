@@ -7,5 +7,7 @@ void mostrarMenu();
 void codificarArchivo();
 void decodificarArchivo();
 void mostrarUso();
+bool leerEntero(int& valor);
+void limpiarBuffer();
 
 #endif

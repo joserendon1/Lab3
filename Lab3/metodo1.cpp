@@ -1,35 +1,63 @@
 #include "metodo1.h"
 #include "bloques.h"
+#include <stdexcept>
 
 std::string invertirBits(const std::string& bloque) {
+    if (bloque.empty()) {
+        throw std::invalid_argument("Error: Bloque vacio para invertir bits");
+    }
+
     std::string resultado;
-    for (char bit : bloque) {
-        resultado += (bit == '0') ? '1' : '0';
+    for (size_t i = 0; i < bloque.length(); i++) {
+        if (bloque[i] != '0' && bloque[i] != '1') {
+            throw std::invalid_argument("Error: Bloque contiene caracteres no binarios");
+        }
+        resultado += (bloque[i] == '0') ? '1' : '0';
     }
     return resultado;
 }
 
 std::string invertirCadaDosBits(const std::string& bloque) {
-    std::string resultado = bloque;
+    if (bloque.empty()) {
+        throw std::invalid_argument("Error: Bloque vacio para inversion cada 2 bits");
+    }
 
+    if (bloque.length() < 2) {
+        throw std::invalid_argument("Error: Bloque muy pequeño para inversion cada 2 bits");
+    }
+
+    std::string resultado = bloque;
     for (size_t pos = 1; pos < resultado.length(); pos += 2) {
         resultado[pos] = (resultado[pos] == '0') ? '1' : '0';
     }
-
     return resultado;
 }
 
 std::string invertirCadaTresBits(const std::string& bloque) {
-    std::string resultado = bloque;
+    if (bloque.empty()) {
+        throw std::invalid_argument("Error: Bloque vacio para inversion cada 3 bits");
+    }
 
+    if (bloque.length() < 3) {
+        throw std::invalid_argument("Error: Bloque muy pequeño para inversion cada 3 bits");
+    }
+
+    std::string resultado = bloque;
     for (size_t i = 2; i < resultado.length(); i += 3) {
         resultado[i] = (resultado[i] == '0') ? '1' : '0';
     }
-
     return resultado;
 }
 
 std::string codificarMetodo1(const std::string& binario, int n) {
+    if (binario.empty()) {
+        throw std::invalid_argument("Error: Binario vacio para codificar");
+    }
+
+    if (n <= 0) {
+        throw std::invalid_argument("Error: Semilla debe ser mayor a 0");
+    }
+
     int numBloques;
     std::string* bloques = dividirEnBloques(binario, n, numBloques);
     std::string* bloquesOriginales = new std::string[numBloques];
@@ -62,6 +90,14 @@ std::string codificarMetodo1(const std::string& binario, int n) {
 }
 
 std::string decodificarMetodo1(const std::string& binario, int n) {
+    if (binario.empty()) {
+        throw std::invalid_argument("Error: Binario vacio para decodificar");
+    }
+
+    if (n <= 0) {
+        throw std::invalid_argument("Error: Semilla debe ser mayor a 0");
+    }
+
     int numBloques;
     std::string* bloques = dividirEnBloques(binario, n, numBloques);
 

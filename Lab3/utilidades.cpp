@@ -4,6 +4,25 @@
 #include "metodo1.h"
 #include "metodo2.h"
 #include <iostream>
+#include <stdexcept>
+
+void limpiarBuffer() {
+    std::cin.clear();
+    while (std::cin.get() != '\n') {
+        if (std::cin.eof()) break;
+    }
+}
+
+bool leerEntero(int& valor) {
+    if (std::cin >> valor) {
+        limpiarBuffer();
+        return true;
+    } else {
+        std::cout << "Error: Por favor ingrese un numero entero valido." << std::endl;
+        limpiarBuffer();
+        return false;
+    }
+}
 
 void mostrarMenu() {
     std::cout << "----PROGRAMA DE CODIFICACION/DECODIFICACION----" << std::endl;
@@ -22,21 +41,32 @@ void codificarArchivo() {
         std::cout << "Nombre del archivo de entrada: ";
         std::getline(std::cin, archivoEntrada);
 
+        if (archivoEntrada.empty()) {
+            throw std::invalid_argument("Error: El nombre del archivo no puede estar vacio");
+        }
+
         std::cout << "Nombre del archivo de salida: ";
         std::getline(std::cin, archivoSalida);
 
+        if (archivoSalida.empty()) {
+            throw std::invalid_argument("Error: El nombre del archivo de salida no puede estar vacio");
+        }
+
         std::cout << "Metodo (1 o 2): ";
-        std::cin >> metodo;
+        if (!leerEntero(metodo)) {
+            return;
+        }
 
         std::cout << "Semilla (entero positivo): ";
-        std::cin >> semilla;
-        std::cin.ignore();
+        if (!leerEntero(semilla)) {
+            return;
+        }
 
         if (metodo != 1 && metodo != 2) {
-            throw std::invalid_argument("Metodo debe ser 1 o 2");
+            throw std::invalid_argument("Error: Metodo debe ser 1 o 2");
         }
         if (semilla <= 0) {
-            throw std::invalid_argument("Semilla debe ser mayor a 0");
+            throw std::invalid_argument("Error: Semilla debe ser mayor a 0");
         }
 
         std::string texto = leerArchivo(archivoEntrada);
@@ -61,7 +91,9 @@ void codificarArchivo() {
         std::cout << "Archivo guardado en: " << archivoSalida << std::endl;
 
     } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Error desconocido durante la codificacion" << std::endl;
     }
 }
 
@@ -74,21 +106,32 @@ void decodificarArchivo() {
         std::cout << "Nombre del archivo codificado: ";
         std::getline(std::cin, archivoEntrada);
 
+        if (archivoEntrada.empty()) {
+            throw std::invalid_argument("Error: El nombre del archivo no puede estar vacio");
+        }
+
         std::cout << "Nombre del archivo de salida: ";
         std::getline(std::cin, archivoSalida);
 
+        if (archivoSalida.empty()) {
+            throw std::invalid_argument("Error: El nombre del archivo de salida no puede estar vacio");
+        }
+
         std::cout << "Metodo (1 o 2): ";
-        std::cin >> metodo;
+        if (!leerEntero(metodo)) {
+            return;
+        }
 
         std::cout << "Semilla (entero positivo): ";
-        std::cin >> semilla;
-        std::cin.ignore();
+        if (!leerEntero(semilla)) {
+            return;
+        }
 
         if (metodo != 1 && metodo != 2) {
-            throw std::invalid_argument("Metodo debe ser 1 o 2");
+            throw std::invalid_argument("Error: Metodo debe ser 1 o 2");
         }
         if (semilla <= 0) {
-            throw std::invalid_argument("Semilla debe ser mayor a 0");
+            throw std::invalid_argument("Error: Semilla debe ser mayor a 0");
         }
 
         std::string binarioCodificado = leerArchivo(archivoEntrada);
@@ -101,16 +144,38 @@ void decodificarArchivo() {
             binarioDecodificado = decodificarMetodo2(binarioCodificado, semilla);
         }
 
+        std::cout << "Binario decodificado: " << binarioDecodificado.length() << " bits" << std::endl;
+
+        size_t longitudOriginal = binarioDecodificado.length();
+        size_t bitsNecesarios = (longitudOriginal + 7) / 8 * 8;
+
+        if (longitudOriginal < bitsNecesarios) {
+            std::cout << "Ajustando longitud: agregando " << (bitsNecesarios - longitudOriginal)
+            << " bits de relleno" << std::endl;
+            binarioDecodificado.append(bitsNecesarios - longitudOriginal, '0');
+        } else if (longitudOriginal > bitsNecesarios) {
+            std::cout << "Ajustando longitud: removiendo " << (longitudOriginal - bitsNecesarios)
+            << " bits sobrantes" << std::endl;
+            binarioDecodificado = binarioDecodificado.substr(0, bitsNecesarios);
+        }
+
         std::string textoDecodificado = binarioATexto(binarioDecodificado);
         escribirArchivo(archivoSalida, textoDecodificado);
 
         std::cout << "----DECODIFICACION EXITOSA----" << std::endl;
         std::cout << "Texto decodificado: " << textoDecodificado.length() << " caracteres" << std::endl;
         std::cout << "Archivo guardado en: " << archivoSalida << std::endl;
-        std::cout << "Primeros 50 caracteres: " << textoDecodificado.substr(0, 50) << std::endl;
+
+        if (!textoDecodificado.empty()) {
+            size_t previewLength = (textoDecodificado.length() < 50) ? textoDecodificado.length() : 50;
+            std::cout << "Primeros " << previewLength << " caracteres: "
+                      << textoDecodificado.substr(0, previewLength) << std::endl;
+        }
 
     } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Error desconocido durante la decodificacion" << std::endl;
     }
 }
 
