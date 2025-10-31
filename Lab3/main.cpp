@@ -26,7 +26,7 @@ int main() {
                 sistemaBancario();
                 break;
             case 4:
-                std::cout << "Saliendo del programa..." << std::endl;
+                std::cout << "Saliendo del programa" << std::endl;
                 break;
             default:
                 std::cout << "Error: Opcion no valida. Por favor seleccione 1, 2, 3 o 4." << std::endl;

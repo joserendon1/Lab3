@@ -26,12 +26,12 @@ bool leerEntero(int& valor) {
 }
 
 void mostrarMenu() {
-    std::cout << "----PROGRAMA DE CODIFICACION/DECODIFICACION----" << std::endl;
+    std::cout << "====PROGRAMA DE CODIFICACION/DECODIFICACION====" << std::endl;
     std::cout << "1. Codificar archivo" << std::endl;
     std::cout << "2. Decodificar archivo" << std::endl;
     std::cout << "3. Sistema Bancario" << std::endl;
     std::cout << "4. Salir" << std::endl;
-    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "================================================" << std::endl;
 }
 
 void codificarArchivo() {
@@ -39,7 +39,7 @@ void codificarArchivo() {
         std::string archivoEntrada, archivoSalida;
         int metodo, semilla;
 
-        std::cout << "----CODIFICAR ARCHIVO----" << std::endl;
+        std::cout << "====CODIFICAR ARCHIVO====" << std::endl;
         std::cout << "Nombre del archivo de entrada: ";
         std::getline(std::cin, archivoEntrada);
 
@@ -88,7 +88,7 @@ void codificarArchivo() {
 
         escribirArchivo(archivoSalida, binarioCodificado);
 
-        std::cout << "----CODIFICACION EXITOSA----" << std::endl;
+        std::cout << "====CODIFICACION EXITOSA====" << std::endl;
         std::cout << "Binario codificado: " << binarioCodificado.length() << " bits" << std::endl;
         std::cout << "Archivo guardado en: " << archivoSalida << std::endl;
 
@@ -104,7 +104,7 @@ void decodificarArchivo() {
         std::string archivoEntrada, archivoSalida;
         int metodo, semilla;
 
-        std::cout << "----DECODIFICAR ARCHIVO----" << std::endl;
+        std::cout << "====DECODIFICAR ARCHIVO====" << std::endl;
         std::cout << "Nombre del archivo codificado: ";
         std::getline(std::cin, archivoEntrada);
 
@@ -164,7 +164,7 @@ void decodificarArchivo() {
         std::string textoDecodificado = binarioATexto(binarioDecodificado);
         escribirArchivo(archivoSalida, textoDecodificado);
 
-        std::cout << "----DECODIFICACION EXITOSA----" << std::endl;
+        std::cout << "====DECODIFICACION EXITOSA====" << std::endl;
         std::cout << "Texto decodificado: " << textoDecodificado.length() << " caracteres" << std::endl;
         std::cout << "Archivo guardado en: " << archivoSalida << std::endl;
 

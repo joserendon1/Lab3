@@ -11,7 +11,14 @@
 bool validarAdministrador() {
     try {
         std::string contrasenaCodificada = leerArchivo("sudo.txt");
-        std::string contrasenaDecodificadaBinario = decodificarMetodo1(contrasenaCodificada, 8);
+        int semilla;
+        std::cout << "Ingrese la semilla con la que se codifico sudo.txt: ";
+        if (!leerEntero(semilla) || semilla <= 0) {
+            std::cout << "Error: Semilla invalida. Debe ser un entero positivo." << std::endl;
+            return false;
+        }
+
+        std::string contrasenaDecodificadaBinario = decodificarMetodo1(contrasenaCodificada, semilla);
         std::string contrasenaDecodificada = binarioATexto(contrasenaDecodificadaBinario);
 
         std::string contrasenaIngresada;
@@ -28,7 +35,7 @@ bool validarAdministrador() {
 void menuAdministrador() {
     int opcion;
     do {
-        std::cout << "\n---- MENU ADMINISTRADOR ----" << std::endl;
+        std::cout << "\n==== MENU ADMINISTRADOR ====" << std::endl;
         std::cout << "1. Registrar usuario" << std::endl;
         std::cout << "2. Listar usuarios" << std::endl;
         std::cout << "3. Ver transacciones" << std::endl;
@@ -46,7 +53,7 @@ void menuAdministrador() {
             }
             break;
         case 2:
-            std::cout << "\n---- USUARIOS REGISTRADOS ----" << std::endl;
+            std::cout << "\n==== USUARIOS REGISTRADOS ====" << std::endl;
             try {
                 std::string usuariosCodificado = leerArchivo("usuarios.txt");
                 if (usuariosCodificado.empty()) {
@@ -96,7 +103,6 @@ bool registrarUsuario() {
     std::cout << "Ingrese cedula: ";
     std::getline(std::cin, cedula);
 
-    // Validaciones robustas
     if (cedula.empty()) {
         std::cout << "La cedula no puede estar vacia." << std::endl;
         return false;
@@ -120,7 +126,6 @@ bool registrarUsuario() {
         return false;
     }
 
-    // Validar que la clave no contenga comas (para evitar corrupción CSV)
     if (clave.find(',') != std::string::npos) {
         std::cout << "Error: La clave no puede contener comas." << std::endl;
         return false;
@@ -233,7 +238,7 @@ void menuCliente() {
 
     int opcion;
     do {
-        std::cout << "\n---- MENU CLIENTE ----" << std::endl;
+        std::cout << "\n==== MENU CLIENTE ====" << std::endl;
         std::cout << "1. Consultar saldo" << std::endl;
         std::cout << "2. Retirar dinero" << std::endl;
         std::cout << "3. Salir" << std::endl;
@@ -249,7 +254,7 @@ void menuCliente() {
             retirarDinero(cedula, saldo);
             break;
         case 3:
-            std::cout << "Saliendo del sistema..." << std::endl;
+            std::cout << "Saliendo del sistema" << std::endl;
             break;
         default:
             std::cout << "Opcion no valida." << std::endl;
@@ -264,7 +269,7 @@ void ejecutarSistemaBancario() {
 
     int opcion;
     do {
-        std::cout << "\n---- SISTEMA BANCARIO ----" << std::endl;
+        std::cout << "\n==== SISTEMA BANCARIO ====" << std::endl;
         std::cout << "1. Ingresar como administrador" << std::endl;
         std::cout << "2. Ingresar como cliente" << std::endl;
         std::cout << "3. Volver al menu principal" << std::endl;
@@ -295,7 +300,7 @@ void ejecutarSistemaBancario() {
 
 void mostrarTransacciones() {
     try {
-        std::cout << "\n---- HISTORIAL DE TRANSACCIONES ----" << std::endl;
+        std::cout << "\n==== HISTORIAL DE TRANSACCIONES ====" << std::endl;
 
         std::ifstream test("transacciones.txt");
         if (!test.is_open()) {

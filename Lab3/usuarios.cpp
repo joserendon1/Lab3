@@ -16,7 +16,6 @@ bool cargarUsuarios() {
 
 bool buscarUsuario(const std::string& cedula, std::string& clave, double& saldo) {
     try {
-        // Validar cédula de búsqueda
         if (!validarCedula(cedula)) {
             return false;
         }
@@ -43,16 +42,14 @@ bool buscarUsuario(const std::string& cedula, std::string& clave, double& saldo)
             size_t pos1 = linea.find(',');
             size_t pos2 = linea.find(',', pos1 + 1);
 
-            // Validar formato antes de procesar
             if (pos1 == std::string::npos || pos2 == std::string::npos) {
-                continue; // Omitir línea corrupta
+                continue;
             }
 
             std::string cedulaArchivo = linea.substr(0, pos1);
 
-            // Validar cédula del archivo
             if (!validarCedula(cedulaArchivo)) {
-                continue; // Omitir cédula inválida
+                continue;
             }
 
             if (cedulaArchivo == cedula) {
@@ -83,7 +80,6 @@ bool usuarioExiste(const std::string& cedula) {
 
 bool actualizarUsuario(const std::string& cedula, const std::string& clave, double saldo) {
     try {
-        // Validar parámetros de entrada
         if (cedula.find(',') != std::string::npos || clave.find(',') != std::string::npos) {
             throw std::invalid_argument("Error: Cedula o clave contienen caracteres invalidos (comas)");
         }
@@ -105,19 +101,16 @@ bool actualizarUsuario(const std::string& cedula, const std::string& clave, doub
                 while (std::getline(stream, linea)) {
                     if (linea.empty()) continue;
 
-                    // Validar formato de línea más estricto
                     size_t pos1 = linea.find(',');
                     size_t pos2 = linea.find(',', pos1 + 1);
 
                     if (pos1 == std::string::npos || pos2 == std::string::npos) {
-                        // Línea corrupta - omitir o loggear
                         std::cerr << "Advertencia: Linea con formato invalido omitida: " << linea << std::endl;
                         continue;
                     }
 
                     std::string cedulaArchivo = linea.substr(0, pos1);
 
-                    // Validar cédula en archivo
                     if (!validarCedula(cedulaArchivo)) {
                         std::cerr << "Advertencia: Cedula invalida en archivo: " << cedulaArchivo << std::endl;
                         continue;

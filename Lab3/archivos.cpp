@@ -43,7 +43,7 @@ void escribirArchivo(const std::string& nombreArchivo, const std::string& conten
         throw std::runtime_error("Error: No se pudo crear el archivo " + nombreArchivo);
     }
 
-    archivo << contenido;
+    archivo.write(contenido.c_str(), contenido.length());
 
     if (archivo.fail()) {
         archivo.close();
