@@ -1,0 +1,11 @@
+debug/archivos.o
+debug/bloques.o
+debug/conversiones.o
+debug/main.o
+debug/metodo1.o
+debug/metodo2.o
+debug/sistema.o
+debug/test_codificacion.o
+debug/test_sudo.o
+debug/usuarios.o
+debug/utilidades.o

@@ -1,0 +1,11 @@
+release/archivos.o
+release/bloques.o
+release/conversiones.o
+release/main.o
+release/metodo1.o
+release/metodo2.o
+release/sistema.o
+release/test_codificacion.o
+release/test_sudo.o
+release/usuarios.o
+release/utilidades.o

@@ -9,5 +9,6 @@ void decodificarArchivo();
 void mostrarUso();
 bool leerEntero(int& valor);
 void limpiarBuffer();
+void sistemaBancario();
 
 #endif

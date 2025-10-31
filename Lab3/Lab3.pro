@@ -10,6 +10,8 @@ SOURCES += \
         main.cpp \
         metodo1.cpp \
         metodo2.cpp \
+        sistema.cpp \
+        usuarios.cpp \
         utilidades.cpp
 
 HEADERS += \
@@ -18,4 +20,6 @@ HEADERS += \
     conversiones.h \
     metodo1.h \
     metodo2.h \
+    sistema.h \
+    usuarios.h \
     utilidades.h

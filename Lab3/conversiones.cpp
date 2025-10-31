@@ -46,9 +46,9 @@ std::string binarioATexto(const std::string& binario) {
         throw std::invalid_argument("Error: Binario vacio para convertir a texto");
     }
 
-    if (binario.length() % 8 != 0) {
+    /*if (binario.length() % 8 != 0) {
         throw std::invalid_argument("Error: Longitud de binario no es multiplo de 8");
-    }
+    }*/
 
     std::string texto;
     for (size_t i = 0; i < binario.length(); i += 8) {

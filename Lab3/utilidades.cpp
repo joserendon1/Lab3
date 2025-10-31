@@ -3,6 +3,7 @@
 #include "conversiones.h"
 #include "metodo1.h"
 #include "metodo2.h"
+#include "sistema.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -28,7 +29,8 @@ void mostrarMenu() {
     std::cout << "----PROGRAMA DE CODIFICACION/DECODIFICACION----" << std::endl;
     std::cout << "1. Codificar archivo" << std::endl;
     std::cout << "2. Decodificar archivo" << std::endl;
-    std::cout << "3. Salir" << std::endl;
+    std::cout << "3. Sistema Bancario" << std::endl;
+    std::cout << "4. Salir" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 }
 
@@ -185,3 +187,8 @@ void mostrarUso() {
     std::cout << "2. Seleccione 'Decodificar archivo' para decodificar un archivo binario" << std::endl;
     std::cout << std::endl;
 }
+
+void sistemaBancario() {
+    ejecutarSistemaBancario();
+}
+

@@ -2,11 +2,7 @@
 #include "utilidades.h"
 
 int main() {
-    std::cout << "----PROGRAMA DE CODIFICACION/DECODIFICACION----" << std::endl;
-    std::cout << "Bienvenido. Asegurese de tener los archivos necesarios en el directorio." << std::endl;
-
     int opcion;
-
     do {
         try {
             mostrarMenu();
@@ -26,10 +22,14 @@ int main() {
                 decodificarArchivo();
                 break;
             case 3:
+                std::cout << "\n[Seleccionado: Sistema Bancario]" << std::endl;
+                sistemaBancario();
+                break;
+            case 4:
                 std::cout << "Saliendo del programa..." << std::endl;
                 break;
             default:
-                std::cout << "Error: Opcion no valida. Por favor seleccione 1, 2 o 3." << std::endl;
+                std::cout << "Error: Opcion no valida. Por favor seleccione 1, 2, 3 o 4." << std::endl;
             }
 
         } catch (const std::exception& e) {
@@ -40,8 +40,8 @@ int main() {
 
         std::cout << std::endl;
 
-    } while (opcion != 3);
+    } while (opcion != 4);
 
-    std::cout << "Programa terminado. ¡Hasta luego!" << std::endl;
     return 0;
 }
+
